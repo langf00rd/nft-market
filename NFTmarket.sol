@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.2;
+pragma experimental ABIEncoderV2;
 
 import "./IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract NFTMarket {
 
@@ -44,7 +46,6 @@ contract NFTMarket {
     }
 
     function activateToken(uint _tokenID) external {
-         
         Token storage _token = tokens[_tokenID];
 
         require (_token.status == TokenStatus.Cancelled, "NFT is inactive");
@@ -61,13 +62,10 @@ contract NFTMarket {
         
         IERC721(_token.token).transferFrom(address(this), msg.sender, _tokenCount);
 
-        payable(_token.seller).transfer(_token.price);
+        // payable(_token.seller).transfer(_token.price);
     }
 
     function getToken(uint _tokenID) external view returns(Token memory) {
         return tokens[_tokenID];
     }
 }
-
-
-// 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
